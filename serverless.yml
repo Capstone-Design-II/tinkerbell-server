@@ -1,0 +1,30 @@
+service: tinkerbell
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${opt:stage, 'dev'}
+  region: ${file(${self:custom.configureFile}):ENVS.SLS_AWS_REGION}
+  profile: ${file(${self:custom.configureFile}):ENVS.SLS_AWS_CRED_PROFILE}
+
+functions:
+  enqueue-handler:
+    handler: ${self:custom.sourcePath}/handler/enqueue-handler.handler
+    events:
+      - http:
+          path: scripts
+          method: post
+
+  get-script-handler:
+    handler: ${self:custom.sourcePath}/handler/get-script-handler.handler
+    events:
+      - http:
+          path: scripts/{uuid}
+          method: get
+
+plugins:
+  - serverless-offline
+
+custom:
+  configureFile: "config/config.js"
+  sourcePath: "src"
