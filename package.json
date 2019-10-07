@@ -1,0 +1,33 @@
+{
+  "name": "tinkerbell-server",
+  "version": "1.0.0",
+  "description": "server of project tinkerbell",
+  "main": "index.js",
+  "repository": "https://github.com/Capstone-Design-II/tinkerbell-server.git",
+  "author": "Sanggu Han <korean139@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "lint-staged": "^9.4.1",
+    "prettier-eslint-cli": "^5.0.0",
+    "serverless": "^1.53.0",
+    "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-offline": "^5.12.0"
+  },
+  "scripts": {
+    "offline": "sls offline",
+    "deploy": "sls deploy -v",
+    "format": "prettier-eslint \"src/**/*.js\"",
+    "precommit": "lint-staged",
+    "commit": "git commit"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
