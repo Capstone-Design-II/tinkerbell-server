@@ -14,7 +14,7 @@
     "noUnusedParameters": true,
 
     "moduleResolution": "node",
-    "baseUrl": "./api-server/",
+    "baseUrl": ".",
     "paths": {
       "*": [
         "node_modules/*",
