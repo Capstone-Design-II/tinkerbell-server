@@ -47,6 +47,11 @@
     "@azure/ms-rest-js" "^1.8.1"
     tslib "^1.9.3"
 
+"@azure/functions@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@azure/functions/-/functions-1.0.3.tgz#1b51d58f188903f59f39bd093fe6f7b8d88deb11"
+  integrity sha512-/D+sz6LgWT+A6RRW2zhwlwhKqqDSxL6HCF1Q1lN0iXolD2FfNFZpzrOxGyGYEEXp/5Dtjp12bcRTBhMH1cBi2Q==
+
 "@azure/ms-rest-azure-env@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@azure/ms-rest-azure-env/-/ms-rest-azure-env-1.1.2.tgz#8505873afd4a1227ec040894a64fdd736b4a101f"
