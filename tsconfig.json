@@ -21,7 +21,9 @@
         "src/@types/*"
       ]
     },
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": [
     "node_modules",
