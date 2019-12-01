@@ -1,3 +1,4 @@
 module.exports.ENVS = serverless => ({
-  COSMOS_DB_ENDPOINT: '<Place cosmos db endpoint here>',
+  SLS_AWS_REGION: '<Place aws region here>',
+  SLS_AWS_CRED_PROFILE: '<Place aws credential profile here>',
 });
