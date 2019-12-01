@@ -1,23 +1,31 @@
 service: tinkerbell-server
 
 provider:
-  name: azure
-  location: Korea Central
+  name: aws
   runtime: nodejs10.x
+  region: ${file(${self:custom.configureFile}):ENVS.SLS_AWS_REGION}
+  profile: ${file(${self:custom.configureFile}):ENVS.SLS_AWS_CRED_PROFILE}
+
 
 functions:
   register:
-    handler: dist/register-user.register
+    handler: ${self:custom.sourcePath}/handler/register-user.register
     events:
-      - http: true
-        x-azure-settings:
-          name: req
-          methods:
-            - post
-          route: register
-          authLevel: anonymous
+      - http:
+          path: register
+          method: post
+
+custom:
+  configureFile: 'config/config.js'
+  sourcePath: 'dist'
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    packager: 'yarn'
+    includeModules:
+      forceExclude:
+        - aws-sdk
 
 plugins:
-  - serverless-azure-functions
+  - serverless-iam-roles-per-function
   - serverless-offline
   - serverless-webpack

@@ -1,11 +1,17 @@
-import { AzureFunction, Context, HttpRequest } from '@azure/functions'
+import { APIGatewayEvent, ProxyResult, Handler, Context } from 'aws-lambda'
 
-const register: AzureFunction = async (context: Context, _req: HttpRequest): Promise<void> => {
-  context.res = {
-    body: 'sample hanlder',
+const generateOKResponse: Function = (): ProxyResult => {
+  const response: ProxyResult = {
+    statusCode: 200,
+    body: '',
   }
 
-  context.done()
+  return response
+}
+
+const register: Handler = async (_event: APIGatewayEvent, _context: Context) => {
+  const response = generateOKResponse()
+  return response
 }
 
 export { register }

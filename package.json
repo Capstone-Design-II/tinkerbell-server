@@ -7,9 +7,15 @@
   "author": "Sanggu Han <korean139@gmail.com>",
   "license": "MIT",
   "private": true,
+  "dependencies": {
+    "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
+    "@types/aws-lambda": "^8.10.36",
+    "aws-sdk": "^2.580.0",
+    "axios": "^0.19.0",
+    "uuid": "^3.3.3"
+  },
   "devDependencies": {
-    "@azure/functions": "^1.0.3",
-    "@types/azure": "^0.9.20",
+    "@aws/dynamodb-data-mapper": "^0.7.3",
     "@types/chai": "^4.2.5",
     "@types/mocha": "^5.2.7",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
@@ -26,7 +32,7 @@
     "prettier": "^1.19.1",
     "prettier-eslint-cli": "^5.0.0",
     "serverless": "^1.53.0",
-    "serverless-azure-functions": "^1.0.2",
+    "serverless-iam-roles-per-function": "^2.0.2",
     "serverless-offline": "^5.12.0",
     "serverless-webpack": "^5.3.1",
     "ts-mocha": "^6.0.0",
@@ -47,11 +53,5 @@
       "eslint --fix",
       "git add"
     ]
-  },
-  "dependencies": {
-    "@typegoose/typegoose": "^6.1.6",
-    "@types/mongoose": "^5.5.32",
-    "mongoose": "^5.7.13",
-    "uuid": "^3.3.3"
   }
 }
