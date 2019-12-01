@@ -14,6 +14,29 @@ functions:
       - http:
           path: register
           method: post
+    environment:
+      DYNAMODB_USER_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_USER_TABLE_NAME}
+    iamRoleStatementsName: ${self:service}-${self:provider.stage}-register-role
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource:
+          - Fn::GetAtt: [ DynamoDBUsers, Arn ]
+
+resources:
+  Resources:
+    DynamoDBUsers:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_USER_TABLE_NAME}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: identificationProfileId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: identificationProfileId
+            KeyType: HASH
 
 custom:
   configureFile: 'config/config.js'
@@ -29,3 +52,6 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-offline
   - serverless-webpack
+
+package:
+  individually: true
