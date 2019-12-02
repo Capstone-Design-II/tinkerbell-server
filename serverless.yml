@@ -16,6 +16,8 @@ functions:
           method: post
     environment:
       DYNAMODB_USER_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_USER_TABLE_NAME}
+      AZURE_COGNITIVE_SERVICE_KEY: ${file(${self:custom.configureFile}):ENVS.AZURE_COGNITIVE_SERVICE_KEY}
+      AZURE_COGNITIVE_SERVICE_ENDPOINT: ${file(${self:custom.configureFile}):ENVS.AZURE_COGNITIVE_SERVICE_ENDPOINT}
     iamRoleStatementsName: ${self:service}-${self:provider.stage}-register-role
     iamRoleStatements:
       - Effect: Allow
