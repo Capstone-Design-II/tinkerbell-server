@@ -40,6 +40,18 @@ resources:
           - AttributeName: identificationProfileId
             KeyType: HASH
 
+    DynamoDBHistory:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_HISTORY_TABLE_NAME}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: uuid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: uuid
+            KeyType: HASH
+
 custom:
   configureFile: 'config/config.js'
   sourcePath: 'dist'
