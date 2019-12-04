@@ -26,6 +26,23 @@ functions:
         Resource:
           - Fn::GetAtt: [ DynamoDBUsers, Arn ]
 
+  result-getter:
+    handler: ${self:custom.sourcePath}/handler/get-result.getResult
+    events:
+      - http:
+          path: result/{uuid}
+          method: get
+    environment:
+      DYNAMODB_HISTORY_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_HISTORY_TABLE_NAME}
+    iamRoleStatementsName: ${self:service}-${self:provider.stage}-result-getter-role
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+        Resource:
+          - Fn::GetAtt: [ DynamoDBHistory, Arn ]
+
+
 resources:
   Resources:
     DynamoDBUsers:
