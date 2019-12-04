@@ -4,7 +4,7 @@ import {
   table,
 } from '@aws/dynamodb-data-mapper-annotations'
 
-@table('tinkerbell-history')
+@table('tinkerbell-histories')
 export class History {
   @hashKey()
   uuid!: string
