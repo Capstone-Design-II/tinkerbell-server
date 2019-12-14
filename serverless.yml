@@ -73,6 +73,11 @@ resources:
       Properties:
         BucketName: ${file(${self:custom.configureFile}):ENVS.S3_MEETING_RECORDS_BUCKET_NAME}
 
+    S3BucketTranscripts:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${file(${self:custom.configureFile}):ENVS.S3_TRANSCRIPTS_BUCKET_NAME}
+
 custom:
   configureFile: 'config/config.js'
   sourcePath: 'dist'
