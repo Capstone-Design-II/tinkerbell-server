@@ -42,7 +42,6 @@ functions:
         Resource:
           - Fn::GetAtt: [ DynamoDBHistory, Arn ]
 
-
 resources:
   Resources:
     DynamoDBUsers:
@@ -68,6 +67,11 @@ resources:
         KeySchema:
           - AttributeName: uuid
             KeyType: HASH
+
+    S3BucketMeetingRecords:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${file(${self:custom.configureFile}):ENVS.S3_MEETING_RECORDS_BUCKET_NAME}
 
 custom:
   configureFile: 'config/config.js'
