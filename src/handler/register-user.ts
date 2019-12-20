@@ -33,11 +33,33 @@ const generateOKResponse: Function = (): ProxyResult => {
   return response
 }
 
-const register: Handler = async (event: APIGatewayEvent, _context: Context) => {
+const generateErrorResponse: Function = (
+  statusCode: number,
+  message: string
+): ProxyResult => {
+    const response: ProxyResult = {
+      statusCode,
+      body: JSON.stringify({ message }),
+      isBase64Encoded: false,
+    }
+
+    return response
+}
+
+const register: Handler = async (
+  event: APIGatewayEvent,
+  _context: Context
+) => {
   const { body } = event
   const requestBody = JSON.parse(body!)
 
   const { name, id, password } = requestBody
+  const params = name || id || password
+  if (!params) {
+    const response = generateErrorResponse(400, 'Bad Request')
+    return response
+  }
+
   const identificationProfileId = await createIdentificationProfile()
   const hashedPassword = await hashPassword(password)
   console.log(hashedPassword)
