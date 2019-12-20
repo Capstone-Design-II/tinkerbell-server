@@ -12,6 +12,9 @@ export class User {
   @attribute()
   name!: string
 
+  @attribute()
+  id!: string
+
   @attribute({ defaultProvider: () => new Date() })
   createdAt?: Date
 }

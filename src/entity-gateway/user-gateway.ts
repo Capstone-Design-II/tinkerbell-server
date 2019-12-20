@@ -13,9 +13,10 @@ export class UserGateway {
 
   public async putUser(
     name: string,
+    id: string,
     identificationProfileId: string
   ): Promise<void> {
-    const newUser = Object.assign(new User, { name, identificationProfileId })
+    const newUser = Object.assign(new User, { name, id, identificationProfileId })
     await this._mapper.put(newUser)
   }
 }
