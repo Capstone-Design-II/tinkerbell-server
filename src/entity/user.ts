@@ -15,6 +15,9 @@ export class User {
   @attribute()
   id!: string
 
+  @attribute()
+  password!: string
+
   @attribute({ defaultProvider: () => new Date() })
   createdAt?: Date
 }
