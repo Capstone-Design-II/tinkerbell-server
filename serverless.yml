@@ -68,6 +68,11 @@ resources:
           - AttributeName: uuid
             KeyType: HASH
 
+    S3BucketCustomerVoices:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${file(${self:custom.configureFile}):ENVS.S3_CUSTOMER_VOICES_BUCKET_NAME}
+
     S3BucketMeetingRecords:
       Type: AWS::S3::Bucket
       Properties:
