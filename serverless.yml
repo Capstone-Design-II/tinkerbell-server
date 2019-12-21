@@ -64,6 +64,39 @@ functions:
         Resource:
           - Fn::GetAtt: [ DynamoDBHistory, Arn ]
 
+  invoke-transcribe:
+    handler: ${self:custom.sourcePath}/handler/invoke-transcribe.invoke
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt: [ SQSTranscriptQueue, Arn ]
+    environment:
+      AWS_REGION_INFO: ${self:provider.region}
+      S3_MEETING_RECORDS_BUCKET_NAME: ${file(${self:custom.configureFile}):ENVS.S3_MEETING_RECORDS_BUCKET_NAME}
+      S3_TRANSCRIPTS_BUCKET_NAME: ${file(${self:custom.configureFile}):ENVS.S3_TRANSCRIPTS_BUCKET_NAME}
+    iamRoleStatementsName: ${self:service}-${self:provider.stage}-invoke-transcript-role
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - sqs:ReceiveMessage
+        Resource:
+          - Fn::GetAtt: [ SQSTranscriptQueue, Arn ]
+      - Effect: Allow
+        Action:
+          - s3:GetObject
+        Resource:
+          - Fn::Join: ['', [Fn::GetAtt: [ S3BucketMeetingRecords, Arn ], '/*'] ]
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+        Resource:
+          - Fn::Join: ['', [Fn::GetAtt: [ S3BucketTranscripts, Arn ], '/*'] ]
+      - Effect: Allow
+        Action:
+          - transcribe:StartTranscriptionJob
+        Resource:
+          - '*'
+
 resources:
   Resources:
     DynamoDBUsers:
