@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { AxiosInstance } from 'axios'
+import { Stream } from 'stream'
 import FormData from 'form-data'
 
 export class AzureIdentificationProfile {
@@ -28,14 +29,14 @@ export class AzureIdentificationProfile {
     return data.identificationProfileId
   }
 
-  public async enroll(id: string, voice: any): Promise<void> {
+  public async enroll(id: string, voice: Stream): Promise<void> {
     const endpoint = `identificationProfiles/${id}/enroll?shortAudio=true`
-    const config = {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    }
     const form = new FormData()
-    form.append('audio', voice)
-    const response = await this._cognitiveService.post(endpoint, form, config)
-    console.log(response)
+    form.append('file', voice)
+    await this._cognitiveService.post(
+      endpoint,
+      form,
+      form.getHeaders()
+    )
   }
 }

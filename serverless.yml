@@ -16,6 +16,7 @@ functions:
           method: post
     environment:
       DYNAMODB_USER_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_USER_TABLE_NAME}
+      S3_CUSTOMER_VOICES_BUCKET_NAME: ${file(${self:custom.configureFile}):ENVS.S3_CUSTOMER_VOICES_BUCKET_NAME}
       AZURE_COGNITIVE_SERVICE_KEY: ${file(${self:custom.configureFile}):ENVS.AZURE_COGNITIVE_SERVICE_KEY}
       AZURE_COGNITIVE_SERVICE_ENDPOINT: ${file(${self:custom.configureFile}):ENVS.AZURE_COGNITIVE_SERVICE_ENDPOINT}
     iamRoleStatementsName: ${self:service}-${self:provider.stage}-register-role
@@ -23,8 +24,10 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
+          - s3:GetObject
         Resource:
           - Fn::GetAtt: [ DynamoDBUsers, Arn ]
+          - Fn::Join: ['', [Fn::GetAtt: [ S3BucketCustomerVoices, Arn ], '/*'] ]
 
   result-getter:
     handler: ${self:custom.sourcePath}/handler/get-result.getResult
