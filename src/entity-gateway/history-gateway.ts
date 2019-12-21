@@ -52,7 +52,7 @@ export class HistoryGateway {
       new History,
       { uuid }
     ))
-    history.generatedNote = note
+    history.note = note
     history.updatedAt = new Date()
     await this._mapper.update(history)
   }
