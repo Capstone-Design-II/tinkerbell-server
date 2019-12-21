@@ -33,7 +33,7 @@ functions:
     handler: ${self:custom.sourcePath}/handler/get-result.getResult
     events:
       - http:
-          path: result/{uuid}
+          path: note/{uuid}
           method: get
     environment:
       DYNAMODB_HISTORY_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_HISTORY_TABLE_NAME}
