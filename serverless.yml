@@ -29,6 +29,22 @@ functions:
           - Fn::GetAtt: [ DynamoDBUsers, Arn ]
           - Fn::Join: ['', [Fn::GetAtt: [ S3BucketCustomerVoices, Arn ], '/*'] ]
 
+  enqueue-request:
+    handler: ${self:custom.sourcePath}/handler/enqueue-request.enqueue
+    events:
+      - http:
+          path: note
+          method: post
+    environment:
+      DYNAMODB_HISTORY_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_HISTORY_TABLE_NAME}
+    iamRoleStatementsName: ${self:service}-${self:provider.stage}-enqueue-request-role
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource:
+          - Fn::GetAtt: [ DynamoDBHistory, Arn ]
+
   result-getter:
     handler: ${self:custom.sourcePath}/handler/get-result.getResult
     events:
