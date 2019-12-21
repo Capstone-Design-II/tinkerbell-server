@@ -1,7 +1,7 @@
 import { APIGatewayEvent, ProxyResult, Handler, Context } from 'aws-lambda'
 import { UserGateway } from '../entity-gateway/user-gateway'
 import { AzureIdentificationProfile } from '../azure/identification-profile'
-import { hash } from 'bcrypt'
+import { hash } from 'bcryptjs'
 
 const registerUser: Function = async (
   name: string,
@@ -62,7 +62,6 @@ const register: Handler = async (
 
   const identificationProfileId = await createIdentificationProfile()
   const hashedPassword = await hashPassword(password)
-  console.log(hashedPassword)
   await registerUser(name, id, hashedPassword, identificationProfileId)
 
   const response = generateOKResponse()
