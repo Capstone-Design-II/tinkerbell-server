@@ -108,6 +108,7 @@ resources:
     SQSTranscriptQueue:
       Type: AWS::SQS::Queue
       Properties:
+        FifoQueue: true
         QueueName: ${file(${self:custom.configureFile}):ENVS.SQS_TRANSCRIPT_QUEUE_NAME}
 
 custom:
