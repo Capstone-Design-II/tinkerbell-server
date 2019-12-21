@@ -1,6 +1,7 @@
 import { APIGatewayEvent, ProxyResult, Handler, Context } from 'aws-lambda'
 import { UserGateway } from '../entity-gateway/user-gateway'
 import { AzureIdentificationProfile } from '../azure/identification-profile'
+import { enrollUser } from '../azure/enroll-user'
 import { hash } from 'bcryptjs'
 
 const registerUser: Function = async (
@@ -53,8 +54,8 @@ const register: Handler = async (
   const { body } = event
   const requestBody = JSON.parse(body!)
 
-  const { name, id, password } = requestBody
-  const params = name || id || password
+  const { name, id, password, key } = requestBody
+  const params = name || id || password || key
   if (!params) {
     const response = generateErrorResponse(400, 'Bad Request')
     return response
@@ -63,6 +64,7 @@ const register: Handler = async (
   const identificationProfileId = await createIdentificationProfile()
   const hashedPassword = await hashPassword(password)
   await registerUser(name, id, hashedPassword, identificationProfileId)
+  await enrollUser(identificationProfileId, key)
 
   const response = generateOKResponse()
   return response
