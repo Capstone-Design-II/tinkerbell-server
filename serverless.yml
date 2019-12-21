@@ -37,13 +37,16 @@ functions:
           method: post
     environment:
       DYNAMODB_HISTORY_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_HISTORY_TABLE_NAME}
+      SQS_TRANSCRIPT_QUEUE_NAME: ${file(${self:custom.configureFile}):ENVS.SQS_TRANSCRIPT_QUEUE_NAME}
     iamRoleStatementsName: ${self:service}-${self:provider.stage}-enqueue-request-role
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
+          - sqs:SendMessage
         Resource:
           - Fn::GetAtt: [ DynamoDBHistory, Arn ]
+          - Fn::GetAtt: [ SQSTranscriptQueue, Arn ]
 
   result-getter:
     handler: ${self:custom.sourcePath}/handler/get-result.getResult
@@ -101,6 +104,11 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${file(${self:custom.configureFile}):ENVS.S3_TRANSCRIPTS_BUCKET_NAME}
+
+    SQSTranscriptQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${file(${self:custom.configureFile}):ENVS.SQS_TRANSCRIPT_QUEUE_NAME}
 
 custom:
   configureFile: 'config/config.js'

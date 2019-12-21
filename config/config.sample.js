@@ -6,6 +6,7 @@ module.exports.ENVS = serverless => ({
   S3_CUSTOMER_VOICES_BUCKET_NAME: '<Place S3 bucket name here>',
   S3_MEETING_RECORDS_BUCKET_NAME: '<Place S3 bucket name here>',
   S3_TRANSCRIPTS_BUCKET_NAME: '<Place S3 bucket name here>',
+  SQS_TRANSCRIPT_QUEUE_NAME: '<Place SQS queue name here>',
   AZURE_COGNITIVE_SERVICE_KEY: '<Place azure cognitive service subscription key here>',
   AZURE_COGNITIVE_SERVICE_ENDPOINT: '<Place azure cognitive service endpoint here>',
 });
