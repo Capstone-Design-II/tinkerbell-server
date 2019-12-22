@@ -106,7 +106,7 @@ functions:
           event: s3:ObjectCreated:*
     environment:
       SQS_TRANSCRIPT_RESULT_QUEUE_URL:
-        Ref: SQSTranscriptRequestQueue
+        Ref: SQSTranscriptResultQueue
     iamRoleStatementsName: ${self:service}-${self:provider.stage}-enqueue-transcribe-result-role
     iamRoleStatements:
       - Effect: Allow
