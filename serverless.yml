@@ -104,6 +104,8 @@ functions:
       - s3:
           bucket: transcripts
           event: s3:ObjectCreated:*
+          rules:
+            - suffix: .json
     environment:
       SQS_TRANSCRIPT_RESULT_QUEUE_URL:
         Ref: SQSTranscriptResultQueue
@@ -116,7 +118,7 @@ functions:
           - Fn::GetAtt: [ SQSTranscriptResultQueue, Arn ]
 
   generate-note:
-    handler: ${self:custom.sourcePath}/handler/generate-note.enqueue
+    handler: ${self:custom.sourcePath}/handler/generate-note.generate
     events:
       - sqs:
           arn:
