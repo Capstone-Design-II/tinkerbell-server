@@ -1,6 +1,7 @@
 import { SQSEvent, Handler, Context } from 'aws-lambda'
 import { Transcribe } from '../aws/transcribe'
 import { InvokeTranscribeParameter } from 'tinkerbell'
+import { HistoryGateway } from '../entity-gateway/history-gateway'
 
 const formS3Uri: Function = (key: string): string => {
   const {
@@ -16,9 +17,12 @@ const invokeTranscriptions: Function = async (
   params: InvokeTranscribeParameter[],
 ): Promise<void> => {
   const transcribeClient = new Transcribe()
+  const historyTable = new HistoryGateway()
   const invokes = params.map(async param => {
     const { uuid, s3Uri } = param
+    const status = `RUNNING`
     await transcribeClient.startTranscription(uuid, s3Uri)
+    await historyTable.updateStatus(uuid, status)
   })
 
   await Promise.all(invokes)

@@ -79,9 +79,12 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
+          - dynamodb:GetItem
+          - dynamodb:UpdateItem
           - sqs:ReceiveMessage
         Resource:
           - Fn::GetAtt: [ SQSTranscriptRequestQueue, Arn ]
+          - Fn::GetAtt: [ DynamoDBHistory, Arn ]
       - Effect: Allow
         Action:
           - s3:GetObject

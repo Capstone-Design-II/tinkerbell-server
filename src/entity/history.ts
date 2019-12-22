@@ -16,6 +16,9 @@ export class History {
   s3key?: string
 
   @attribute()
+  status?: string
+
+  @attribute()
   note?: string
 
   @attribute({ defaultProvider: () => new Date() })

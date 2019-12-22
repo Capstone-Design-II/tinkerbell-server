@@ -61,8 +61,10 @@ const updateNote: Function = async (
   uuid: string,
   note: string,
 ): Promise<void> => {
+  const status = `COMPLETED`
   const historyTable = new HistoryGateway()
   await historyTable.updateNote(uuid, note)
+  await historyTable.updateStatus(uuid, status)
 }
 
 const generateNote: Function = async (

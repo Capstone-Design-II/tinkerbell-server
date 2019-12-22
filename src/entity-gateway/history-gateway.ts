@@ -14,7 +14,8 @@ export class HistoryGateway {
   public async putHistory(
     uuid: string,
   ): Promise<void> {
-    const newHistory = Object.assign(new History, { uuid })
+    const status = `PENDING`
+    const newHistory = Object.assign(new History, { uuid, status })
     await this._mapper.put(newHistory)
   }
 
@@ -53,6 +54,19 @@ export class HistoryGateway {
       { uuid }
     ))
     history.note = note
+    history.updatedAt = new Date()
+    await this._mapper.update(history)
+  }
+
+  public async updateStatus(
+    uuid: string,
+    status: string,
+  ): Promise<void> {
+    const history = await this._mapper.get(Object.assign(
+      new History,
+      { uuid }
+    ))
+    history.status = status
     history.updatedAt = new Date()
     await this._mapper.update(history)
   }
