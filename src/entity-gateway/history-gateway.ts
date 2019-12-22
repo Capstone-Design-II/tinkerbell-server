@@ -80,4 +80,13 @@ export class HistoryGateway {
     ))
     return history
   }
+
+  public async getHistoryList(): Promise<History[]> {
+    let historyList =[]
+    for await (const history of this._mapper.scan(History)) {
+      historyList.push(history)
+    }
+
+    return historyList
+  }
 }

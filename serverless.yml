@@ -65,6 +65,22 @@ functions:
         Resource:
           - Fn::GetAtt: [ DynamoDBHistory, Arn ]
 
+  list-getter:
+    handler: ${self:custom.sourcePath}/handler/get-list.getList
+    events:
+      - http:
+          path: note
+          method: get
+    environment:
+      DYNAMODB_HISTORY_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_HISTORY_TABLE_NAME}
+    iamRoleStatementsName: ${self:service}-${self:provider.stage}-list-getter-role
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource:
+          - Fn::GetAtt: [ DynamoDBHistory, Arn ]
+
   invoke-transcribe:
     handler: ${self:custom.sourcePath}/handler/invoke-transcribe.invoke
     events:
