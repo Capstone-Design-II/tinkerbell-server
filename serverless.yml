@@ -145,6 +145,12 @@ resources:
         FifoQueue: true
         QueueName: ${file(${self:custom.configureFile}):ENVS.SQS_TRANSCRIPT_QUEUE_NAME}
 
+    SQSTranscriptResultQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        FifoQueue: true
+        QueueName: ${file(${self:custom.configureFile}):ENVS.SQS_TRANSCRIPT_RESULT_QUEUE_NAME}
+
 custom:
   configureFile: 'config/config.js'
   sourcePath: 'dist'
