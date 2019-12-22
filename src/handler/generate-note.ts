@@ -1,6 +1,7 @@
 import { SQSEvent, Handler, Context } from 'aws-lambda'
 import { TranscriptResult, GenerateNoteParameter } from 'tinkerbell'
 import { S3 } from 'aws-sdk'
+import { HistoryGateway } from '../entity-gateway/history-gateway'
 
 const getTranscriptResult: Function = async (
   bucket: string,
@@ -56,13 +57,22 @@ const constructNote: Function = (
   return note
 }
 
+const updateNote: Function = async (
+  uuid: string,
+  note: string,
+): Promise<void> => {
+  const historyTable = new HistoryGateway()
+  await historyTable.updateNote(uuid, note)
+}
+
 const generateNote: Function = async (
   param: GenerateNoteParameter,
 ): Promise<void> => {
-  const { bucket, key } = param
-  const transcriptResult = await getTranscriptResult(bucket, key)
   try {
+    const { bucket, key, uuid } = param
+    const transcriptResult = await getTranscriptResult(bucket, key)
     const note = constructNote(transcriptResult)
+    await updateNote(uuid, note)
     console.log(note)
   } catch (err) {
     console.error(err)
