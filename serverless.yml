@@ -139,6 +139,17 @@ resources:
       Properties:
         BucketName: ${file(${self:custom.configureFile}):ENVS.S3_TRANSCRIPTS_BUCKET_NAME}
 
+    EnqueueDashresultLambdaPermissionTranscriptsS3:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName:
+          Fn::GetAtt: [ EnqueueDashresultLambdaFunction, Arn ]
+        Principal: s3.amazonaws.com
+        Action: lambda:InvokeFunction
+        SourceAccount:
+          Ref: AWS::AccountId
+        SourceArn: ${file(${self:custom.configureFile}):ENVS.S3_TRANSCRIPTS_BUCKET_ARN}
+
     SQSTranscriptRequestQueue:
       Type: AWS::SQS::Queue
       Properties:
