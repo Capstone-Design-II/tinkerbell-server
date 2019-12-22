@@ -14,10 +14,10 @@ const putHistory: Function = async (uuid: string): Promise<void> => {
 
 const sendMessage: Function = async (
   uuid: string,
-  key: string
+  key: string,
 ): Promise<void> => {
   const {
-    SQS_TRANSCRIPT_QUEUE_URL
+    SQS_TRANSCRIPT_QUEUE_URL,
   } = process.env
 
   const sqs = new SQS()

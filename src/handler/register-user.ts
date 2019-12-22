@@ -8,7 +8,7 @@ const registerUser: Function = async (
   name: string,
   id: string,
   password: string,
-  identificationProfileId: string
+  identificationProfileId: string,
 ): Promise<void> => {
   const userTable = new UserGateway()
   await userTable.putUser(name, id, password, identificationProfileId)
@@ -36,7 +36,7 @@ const generateOKResponse: Function = (): ProxyResult => {
 
 const generateErrorResponse: Function = (
   statusCode: number,
-  message: string
+  message: string,
 ): ProxyResult => {
     const response: ProxyResult = {
       statusCode,
@@ -49,7 +49,7 @@ const generateErrorResponse: Function = (
 
 const register: Handler = async (
   event: APIGatewayEvent,
-  _context: Context
+  _context: Context,
 ) => {
   const { body } = event
   const requestBody = JSON.parse(body!)

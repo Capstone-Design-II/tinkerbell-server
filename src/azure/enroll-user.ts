@@ -30,7 +30,7 @@ const getAudioFile: Function = async (s3Key: string): Promise<Stream> => {
 
 const enroll: Function = async (
   identificationProfileId: string,
-  audio: Stream
+  audio: Stream,
 ): Promise<void> => {
   const identificationClient = new AzureIdentificationProfile()
   audio.on('end', async () => {
@@ -40,7 +40,7 @@ const enroll: Function = async (
 
 const enrollUser: Function = async (
   identificationProfileId: string,
-  s3Key: string
+  s3Key: string,
 ): Promise<void> => {
   const audio = await getAudioFile(s3Key)
 
