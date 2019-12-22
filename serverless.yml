@@ -131,12 +131,15 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
+          - dynamodb:GetItem
+          - dynamodb:UpdateItem
           - s3:GetObject
           - sqs:ReceiveMessage
         Resource:
           - Fn::GetAtt: [ SQSTranscriptResultQueue, Arn ]
           - Fn::Join: ['', [Fn::GetAtt: [ S3BucketMeetingRecords, Arn ], '/*'] ]
           - Fn::Join: ['', [Fn::GetAtt: [ S3BucketTranscripts, Arn ], '/*'] ]
+          - Fn::GetAtt: [ DynamoDBHistory, Arn ]
 
 resources:
   Resources:
