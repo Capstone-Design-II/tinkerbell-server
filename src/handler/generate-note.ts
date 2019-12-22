@@ -1,11 +1,72 @@
 import { SQSEvent, Handler, Context } from 'aws-lambda'
-import { GenerateNoteParameter } from 'tinkerbell'
+import { TranscriptResult, GenerateNoteParameter } from 'tinkerbell'
+import { S3 } from 'aws-sdk'
+
+const getTranscriptResult: Function = async (
+  bucket: string,
+  key: string,
+): Promise<TranscriptResult> => {
+  const s3 = new S3()
+  const getObjectParam = {
+    Bucket: bucket,
+    Key: key,
+  }
+
+  const s3Response = await s3.getObject(
+    getObjectParam as S3.Types.GetObjectRequest
+  ).promise()
+
+  const { Body: transcriptResultBuffer } = s3Response
+  const transcriptResult = transcriptResultBuffer!.toString()
+
+  return JSON.parse(transcriptResult)
+}
+
+const constructNote: Function = (
+  transcriptResult: TranscriptResult
+): string => {
+  const { jobName } = transcriptResult
+  let note = `note ${jobName}\n`
+
+  const { results } = transcriptResult
+  const { speaker_labels: speakerLabels, items } = results
+  const { segments } = speakerLabels
+
+  segments.forEach(segment => {
+    const {
+      speaker_label: speaker,
+      start_time: startTime,
+      end_time: endTime,
+    } = segment
+    const startIndex = items.findIndex(item => item['start_time'] === startTime)
+    const endIndex = items.findIndex(item => item['end_time'] === endTime)
+    const segmentItems = items.slice(startIndex, endIndex + 1)
+    const segmentWords = segmentItems.map(item => {
+      const word = item.alternatives[0].content
+      if (item.type === 'pronunciation')
+        return ` ${word}`
+      return word
+    })
+
+    const segmentSentence = segmentWords.join('')
+    const lastWord = items[endIndex + 1].alternatives[0].content
+    note += `${speaker}:${segmentSentence}${lastWord}\n`
+  })
+
+  return note
+}
 
 const generateNote: Function = async (
   param: GenerateNoteParameter,
 ): Promise<void> => {
-  console.log(param)
-  // TODO: implement generate note
+  const { bucket, key } = param
+  const transcriptResult = await getTranscriptResult(bucket, key)
+  try {
+    const note = constructNote(transcriptResult)
+    console.log(note)
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 const generateNotes: Function = async (
