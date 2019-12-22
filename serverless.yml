@@ -37,7 +37,8 @@ functions:
           method: post
     environment:
       DYNAMODB_HISTORY_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_HISTORY_TABLE_NAME}
-      SQS_TRANSCRIPT_QUEUE_NAME: ${file(${self:custom.configureFile}):ENVS.SQS_TRANSCRIPT_QUEUE_NAME}
+      SQS_TRANSCRIPT_QUEUE_URL:
+        Ref: SQSTranscriptQueue
     iamRoleStatementsName: ${self:service}-${self:provider.stage}-enqueue-request-role
     iamRoleStatements:
       - Effect: Allow
