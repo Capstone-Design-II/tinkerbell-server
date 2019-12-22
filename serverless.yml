@@ -98,6 +98,23 @@ functions:
         Resource:
           - '*'
 
+  enqueue-result:
+    handler: ${self:custom.sourcePath}/handler/enqueue-transcribe-results.enqueue
+    events:
+      - s3:
+          bucket: transcripts
+          event: s3:ObjectCreated:*
+    environment:
+      SQS_TRANSCRIPT_RESULT_QUEUE_URL:
+        Ref: SQSTranscriptRequestQueue
+    iamRoleStatementsName: ${self:service}-${self:provider.stage}-enqueue-transcribe-result-role
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - sqs:SendMessage
+        Resource:
+          - Fn::GetAtt: [ SQSTranscriptResultQueue, Arn ]
+
 resources:
   Resources:
     DynamoDBUsers:
