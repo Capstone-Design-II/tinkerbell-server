@@ -162,6 +162,10 @@ resources:
         FifoQueue: true
         QueueName: ${file(${self:custom.configureFile}):ENVS.SQS_TRANSCRIPT_RESULT_QUEUE_NAME}
 
+layer:
+  ffmpeg:
+    path: ffmpeg-static-build
+
 custom:
   configureFile: 'config/config.js'
   sourcePath: 'dist'
