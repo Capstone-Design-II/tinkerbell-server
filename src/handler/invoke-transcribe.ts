@@ -13,7 +13,7 @@ const formS3Uri: Function = (key: string): string => {
 }
 
 const invokeTranscriptions: Function = async (
-  params: InvokeTranscribeParameter[]
+  params: InvokeTranscribeParameter[],
 ): Promise<void> => {
   const transcribeClient = new Transcribe()
   const invokes = params.map(async param => {

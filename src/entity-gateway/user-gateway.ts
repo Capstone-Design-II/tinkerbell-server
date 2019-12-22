@@ -15,13 +15,13 @@ export class UserGateway {
     name: string,
     id: string,
     password: string,
-    identificationProfileId: string
+    identificationProfileId: string,
   ): Promise<void> {
     const newUser = Object.assign(new User, {
       name,
       id,
       password,
-      identificationProfileId
+      identificationProfileId,
     })
 
     await this._mapper.put(newUser)
