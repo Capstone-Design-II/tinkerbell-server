@@ -1,0 +1,2 @@
+ffmpeg-static-build/ffmpeg filter=lfs diff=lfs merge=lfs -text
+ffmpeg-static-build/ffprobe filter=lfs diff=lfs merge=lfs -text
