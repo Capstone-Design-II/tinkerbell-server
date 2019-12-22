@@ -13,6 +13,7 @@
     "aws-sdk": "^2.580.0",
     "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
+    "fluent-ffmpeg": "^2.1.2",
     "form-data": "^3.0.0",
     "uuid": "^3.3.3"
   },
@@ -20,6 +21,7 @@
     "@aws/dynamodb-data-mapper": "^0.7.3",
     "@types/bcryptjs": "^2.4.2",
     "@types/chai": "^4.2.5",
+    "@types/fluent-ffmpeg": "^2.1.12",
     "@types/mocha": "^5.2.7",
     "@types/uuid": "^3.4.6",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
