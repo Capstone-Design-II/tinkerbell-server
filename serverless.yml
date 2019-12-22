@@ -37,8 +37,8 @@ functions:
           method: post
     environment:
       DYNAMODB_HISTORY_TABLE_NAME: ${file(${self:custom.configureFile}):ENVS.DYNAMODB_HISTORY_TABLE_NAME}
-      SQS_TRANSCRIPT_QUEUE_URL:
-        Ref: SQSTranscriptQueue
+      SQS_TRANSCRIPT_REQUEST_QUEUE_URL:
+        Ref: SQSTranscriptRequestQueue
     iamRoleStatementsName: ${self:service}-${self:provider.stage}-enqueue-request-role
     iamRoleStatements:
       - Effect: Allow
@@ -47,7 +47,7 @@ functions:
           - sqs:SendMessage
         Resource:
           - Fn::GetAtt: [ DynamoDBHistory, Arn ]
-          - Fn::GetAtt: [ SQSTranscriptQueue, Arn ]
+          - Fn::GetAtt: [ SQSTranscriptRequestQueue, Arn ]
 
   result-getter:
     handler: ${self:custom.sourcePath}/handler/get-result.getResult
@@ -70,7 +70,7 @@ functions:
     events:
       - sqs:
           arn:
-            Fn::GetAtt: [ SQSTranscriptQueue, Arn ]
+            Fn::GetAtt: [ SQSTranscriptRequestQueue, Arn ]
     environment:
       AWS_REGION_INFO: ${self:provider.region}
       S3_MEETING_RECORDS_BUCKET_NAME: ${file(${self:custom.configureFile}):ENVS.S3_MEETING_RECORDS_BUCKET_NAME}
@@ -81,7 +81,7 @@ functions:
         Action:
           - sqs:ReceiveMessage
         Resource:
-          - Fn::GetAtt: [ SQSTranscriptQueue, Arn ]
+          - Fn::GetAtt: [ SQSTranscriptRequestQueue, Arn ]
       - Effect: Allow
         Action:
           - s3:GetObject
@@ -139,11 +139,11 @@ resources:
       Properties:
         BucketName: ${file(${self:custom.configureFile}):ENVS.S3_TRANSCRIPTS_BUCKET_NAME}
 
-    SQSTranscriptQueue:
+    SQSTranscriptRequestQueue:
       Type: AWS::SQS::Queue
       Properties:
         FifoQueue: true
-        QueueName: ${file(${self:custom.configureFile}):ENVS.SQS_TRANSCRIPT_QUEUE_NAME}
+        QueueName: ${file(${self:custom.configureFile}):ENVS.SQS_TRANSCRIPT_REQUEST_QUEUE_NAME}
 
     SQSTranscriptResultQueue:
       Type: AWS::SQS::Queue

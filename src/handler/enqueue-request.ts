@@ -17,13 +17,13 @@ const sendMessage: Function = async (
   key: string,
 ): Promise<void> => {
   const {
-    SQS_TRANSCRIPT_QUEUE_URL,
+    SQS_TRANSCRIPT_REQUEST_QUEUE_URL,
   } = process.env
 
   const sqs = new SQS()
   const body = { uuid, key }
   const sendMessageParam = {
-    QueueUrl: SQS_TRANSCRIPT_QUEUE_URL,
+    QueueUrl: SQS_TRANSCRIPT_REQUEST_QUEUE_URL,
     MessageBody: JSON.stringify(body),
     MessageGroupId: uuid,
     MessageDeduplicationId: uuid,
