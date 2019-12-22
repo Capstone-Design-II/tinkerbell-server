@@ -7,9 +7,12 @@ const generateUuid: Function = (): string => {
   return uuid()
 }
 
-const putHistory: Function = async (uuid: string): Promise<void> => {
+const putHistory: Function = async (
+  uuid: string,
+  key: string,
+): Promise<void> => {
   const historyTable = new HistoryGateway()
-  await historyTable.putHistory(uuid)
+  await historyTable.putHistory(uuid, key)
 }
 
 const sendMessage: Function = async (
@@ -48,9 +51,9 @@ const enqueue: Handler = async (event: APIGatewayEvent, _context: Context) => {
   const requestBody = JSON.parse(body!)
 
   const uuid = generateUuid()
-  await putHistory(uuid)
-
   const { key } = requestBody
+  await putHistory(uuid, key)
+
   await sendMessage(uuid, key)
 
   const response = generateOKResponse(uuid)
